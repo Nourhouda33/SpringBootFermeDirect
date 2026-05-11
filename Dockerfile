@@ -22,8 +22,8 @@ WORKDIR /app
 # Copier le JAR compilé
 COPY --from=build /app/target/FermeDirecte-2.0.0.jar app.jar
 
-# Port exposé (Railway utilise la variable PORT dynamique)
+# Railway injecte PORT automatiquement
 EXPOSE 8080
 
-# Format shell pour que $PORT soit bien interprété par Railway
-ENTRYPOINT ["sh", "-c", "java -Dspring.profiles.active=railway -Dserver.port=$PORT -jar app.jar"]
+# sh -c permet à $PORT d'être résolu depuis l'environnement Railway
+CMD ["sh", "-c", "java -Dspring.profiles.active=railway -Dserver.port=${PORT:-8080} -jar app.jar"]
