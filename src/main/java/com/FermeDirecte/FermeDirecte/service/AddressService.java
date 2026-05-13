@@ -69,7 +69,6 @@ public class AddressService {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Adresse introuvable"));
 
-        // ✅ sécurité : vérifier que l'adresse appartient au user
         if (!address.getUser().getId().equals(user.getId())) {
             throw new BadRequestException("Non autorisé à modifier cette adresse");
         }
@@ -104,7 +103,6 @@ public class AddressService {
         Address address = addressRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Adresse introuvable"));
 
-        // ✅ sécurité
         if (!address.getUser().getId().equals(user.getId())) {
             throw new BadRequestException("Non autorisé à supprimer cette adresse");
         }

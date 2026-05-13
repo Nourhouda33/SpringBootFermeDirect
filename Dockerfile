@@ -26,4 +26,4 @@ COPY --from=build /app/target/FermeDirecte-2.0.0.jar app.jar
 EXPOSE 8080
 
 # sh -c permet à $PORT d'être résolu depuis l'environnement Railway
-CMD ["sh", "-c", "java -Dspring.profiles.active=railway -Dserver.port=${PORT:-8080} -jar app.jar"]
+CMD ["sh", "-c", "java -Xms64m -Xmx256m -XX:+UseSerialGC -Dspring.profiles.active=railway -Dserver.port=${PORT:-8080} -jar app.jar"]

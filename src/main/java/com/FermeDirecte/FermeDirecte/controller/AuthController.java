@@ -21,14 +21,12 @@ public class AuthController {
 
     private final AuthService authService;
 
-    /** POST /api/auth/login */
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    /** POST /api/auth/register */
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(
             @Valid @RequestBody RegisterRequest request) {
@@ -36,14 +34,12 @@ public class AuthController {
                 .body(authService.register(request));
     }
 
-    /** POST /api/auth/refresh */
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(
             @RequestBody Map<String, String> body) {
         return ResponseEntity.ok(authService.refresh(body.get("refreshToken")));
     }
 
-    /** POST /api/auth/logout */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
             @RequestBody Map<String, String> body) {
@@ -51,11 +47,6 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * POST /api/auth/forgot-password
-     * Body : { "email": "user@example.com" }
-     * Retourne le token de réinitialisation (simulation — en prod : envoi par email)
-     */
     @PostMapping("/forgot-password")
     public ResponseEntity<Map<String, String>> forgotPassword(
             @Valid @RequestBody ForgotPasswordRequest request) {
@@ -66,10 +57,6 @@ public class AuthController {
         ));
     }
 
-    /**
-     * POST /api/auth/reset-password
-     * Body : { "token": "...", "nouveauMotDePasse": "..." }
-     */
     @PostMapping("/reset-password")
     public ResponseEntity<Map<String, String>> resetPassword(
             @Valid @RequestBody ResetPasswordRequest request) {

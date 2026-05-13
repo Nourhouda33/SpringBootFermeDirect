@@ -55,7 +55,6 @@ public class AuthService {
 
         userRepository.save(user);
 
-        // Si l'utilisateur est un vendeur ou admin, créer automatiquement son profil vendeur
         if (request.getRole() == Role.SELLER || request.getRole() == Role.ADMIN) {
             String nomBoutique = request.getRole() == Role.ADMIN 
                 ? "Administration FermeDirecte" 
@@ -158,16 +157,6 @@ public class AuthService {
         });
     }
 
-    // -------------------------------------------------------
-    // Réinitialisation de mot de passe
-    // -------------------------------------------------------
-
-    /**
-     * Étape 1 : l'utilisateur soumet son email.
-     * On génère un token UUID valable 1 heure et on le stocke en BDD.
-     * En production, ce token serait envoyé par email.
-     * Ici on le retourne directement dans la réponse (simulation).
-     */
     @Transactional
     public String forgotPassword(ForgotPasswordRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
@@ -178,16 +167,9 @@ public class AuthService {
         user.setResetTokenExpiry(LocalDateTime.now().plusHours(1));
         userRepository.save(user);
 
-        // En production : envoyer un email avec le lien contenant le token
-        // emailService.sendResetLink(user.getEmail(), token);
-
-        // Pour la démo / Postman : on retourne le token directement
         return token;
     }
 
-    /**
-     * Étape 2 : l'utilisateur soumet le token + nouveau mot de passe.
-     */
     @Transactional
     public void resetPassword(ResetPasswordRequest request) {
         User user = userRepository.findByResetToken(request.getToken())

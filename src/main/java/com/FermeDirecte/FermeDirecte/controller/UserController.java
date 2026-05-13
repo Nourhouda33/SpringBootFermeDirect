@@ -18,20 +18,14 @@ public class UserController {
 
     private final UserService userService;
 
-    /**
-     * GET /api/users
-     * Récupère tous les utilisateurs (Admin uniquement)
-     */
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    /**
-     * PUT /api/users/{id}
-     * Met à jour un utilisateur par son ID (Admin uniquement)
-     */
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserProfileResponse> updateUserById(
@@ -40,10 +34,6 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUserById(id, request));
     }
 
-    /**
-     * GET /api/users/profile
-     * Récupère le profil de l'utilisateur connecté
-     */
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserProfileResponse> getProfile(Authentication authentication) {
@@ -51,10 +41,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getProfile(email));
     }
 
-    /**
-     * PUT /api/users/profile
-     * Met à jour le profil de l'utilisateur connecté
-     */
+
     @PutMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserProfileResponse> updateProfile(

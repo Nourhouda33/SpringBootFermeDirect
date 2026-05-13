@@ -110,7 +110,6 @@ public class CartService {
         return toResponse(cart, null);
     }
 
-    // ✅ AJOUT MINIMAL (required by controller)
     @Transactional
     public void clearCart(String email) {
         User user = getUser(email);

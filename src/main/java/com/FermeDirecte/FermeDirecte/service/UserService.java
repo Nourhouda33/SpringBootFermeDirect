@@ -19,9 +19,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    /**
-     * Récupère tous les utilisateurs (Admin uniquement)
-     */
     @Transactional(readOnly = true)
     public java.util.List<java.util.Map<String, Object>> getAllUsers() {
         return userRepository.findAll().stream()
@@ -40,9 +37,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Récupère le profil complet de l'utilisateur
-     */
     @Transactional(readOnly = true)
     public UserProfileResponse getProfile(String email) {
         User user = userRepository.findByEmail(email)
@@ -74,9 +68,7 @@ public class UserService {
                 .build();
     }
 
-    /**
-     * Met à jour un utilisateur par son ID (Admin)
-     */
+
     @Transactional
     public UserProfileResponse updateUserById(Long id, UserProfileRequest request) {
         User user = userRepository.findById(id)
@@ -105,15 +97,11 @@ public class UserService {
                 .build();
     }
 
-    /**
-     * Met à jour le profil de l'utilisateur
-     */
     @Transactional
     public UserProfileResponse updateProfile(String currentEmail, UserProfileRequest request) {
         User user = userRepository.findByEmail(currentEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
 
-        // Vérifier si le nouvel email est déjà utilisé par un autre utilisateur
         if (!currentEmail.equals(request.getEmail())) {
             if (userRepository.existsByEmail(request.getEmail())) {
                 throw new IllegalArgumentException("Cet email est déjà utilisé");
@@ -121,7 +109,6 @@ public class UserService {
             user.setEmail(request.getEmail());
         }
 
-        // Mettre à jour les informations
         user.setPrenom(request.getPrenom());
         user.setNom(request.getNom());
         user.setTelephone(request.getTelephone());

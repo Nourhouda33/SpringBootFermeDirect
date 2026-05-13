@@ -47,7 +47,6 @@ public class User {
     @Column
     private String refreshToken;
 
-    // Réinitialisation de mot de passe
     @Column
     private String resetToken;
 
